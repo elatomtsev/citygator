@@ -1,5 +1,6 @@
 from PySide6.QtWidgets import QApplication, QMainWindow, QMessageBox
 from PySide6.QtCore import Qt
+from PySide6.QtGui import QIcon
 from ui_main import Ui_MainWindow
 
 
@@ -38,5 +39,6 @@ class MainWindow(QMainWindow):
 if __name__ == "__main__":
     app = QApplication([])
     win = MainWindow()
+    app.setWindowIcon(QIcon("icon.png"))
     win.show()
     app.exec()
