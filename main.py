@@ -1,4 +1,4 @@
-from PySide6.QtWidgets import QApplication, QMainWindow
+from PySide6.QtWidgets import QApplication, QMainWindow, QMessageBox
 from PySide6.QtCore import Qt
 from ui_main import Ui_MainWindow
 
@@ -13,10 +13,19 @@ class MainWindow(QMainWindow):
 
     def but_add(self):
         # Извлечение города с форматированием
-        self.format_city = self.ui.user_city.text().strip().title()
+        format_city = self.ui.user_city.text().strip().title()
+        if self.ui.list_cities.count() != 0:
+            if self.ui.curr_city.text()[-1].lower() != format_city[0].lower():
+                QMessageBox.warning(
+                    self,
+                    "Предупреждение",
+                    "Начальная буква введённого города не соотвутствует последней букве предыдущего слова",
+                )
+                self.ui.user_city.clear()
+                return 0
         # Добавляем город в список
-        self.ui.list_cities.addItem(self.format_city)
-        self.ui.curr_city.setText(self.format_city)
+        self.ui.list_cities.addItem(format_city)
+        self.ui.curr_city.setText(format_city)
         self.ui.user_city.clear()
         self.ui.list_cities.sortItems()
 
@@ -24,8 +33,6 @@ class MainWindow(QMainWindow):
         # Если нажата кнопка "Enter" и строка непустая, добавляем город в список
         if e.key() in (Qt.Key_Return, Qt.Key_Enter) and self.ui.user_city.text().strip() != "":
             self.ui.add_city.click()
-
-    # def upd_item(self):
 
 
 if __name__ == "__main__":
